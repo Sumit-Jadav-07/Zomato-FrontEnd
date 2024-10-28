@@ -34,6 +34,7 @@ function Signup() {
 
   const handleGoogleLoginFailure = () => {
     console.error("Google login failed");
+    alert("Google login failed");
   };
 
   const handleSignup = async (e) => {
@@ -44,7 +45,7 @@ function Signup() {
     }
 
     try {
-      const response = await axios.post('/api/signup', {
+      const response = await axios.post('/api/customer', {
         fullname,
         email,
       });
@@ -65,7 +66,7 @@ function Signup() {
       <div className="font-metropolis h-auto w-[475px] bg-white p-7 flex flex-col rounded-md">
         <div className="flex items-center justify-between  w-full">
           <h1 className="text-3xl">Sign up</h1>
-          <span className="text-xl cursor-pointer">&#x2718;</span>
+          <span className="text-xl cursor-pointer">&#x2716;</span>
         </div>
 
         <div className="mt-6 space-y-4">
@@ -125,7 +126,7 @@ function Signup() {
           </label>
         </div>
 
-        <button className="ease-in duration-200 text-center bg-[#e23745d7] rounded-md p-3 mt-5 text-[#ffffff] hover:bg-[#E23744]">Create Account</button>
+        <button onClick={handleSignup} className="ease-in duration-200 text-center bg-[#e23745d7] rounded-md p-3 mt-5 text-[#ffffff] hover:bg-[#E23744]">Create Account</button>
 
         <div className="relative flex items-center justify-center my-6">
           <div className="absolute px-2 bg-white text-gray-500">Or</div>
