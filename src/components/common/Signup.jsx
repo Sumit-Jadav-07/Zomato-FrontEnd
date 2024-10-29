@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import { makeStyles } from "@mui/styles";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import styles from './Signup.module.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -9,13 +11,13 @@ const useStyles = makeStyles((theme) => ({
       "&.Mui-focused fieldset": {
         borderColor: "green",
       },
-      fontFamily: 'Metropolis, sans-serif',
+      fontFamily: "Metropolis, sans-serif",
     },
     "& .MuiInputLabel-root": {
       "&.Mui-focused": {
         color: "green",
       },
-      fontFamily: 'Metropolis, sans-serif',
+      fontFamily: "Metropolis, sans-serif",
     },
   },
 }));
@@ -25,6 +27,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [agreed, setAgreed] = useState(false);
   const classes = useStyles();
+  const clientId = "956095514806-v41p0jeg8ik46llfuv4gg6fk2pmgg652.apps.googleusercontent.com";
 
   const handleGoogleLoginSuccess = (credentialResponse) => {
     console.log("Google login success:", credentialResponse);
@@ -45,10 +48,13 @@ function Signup() {
     }
 
     try {
-      const response = await axios.post('/api/customer', {
-        fullname,
-        email,
-      });
+      const response = await axios.post(
+        "http://localhost:9999/api/public/session/customer",
+        {
+          fullname,
+          email,
+        }
+      );
       alert(response.data); // Show success message
     } catch (error) {
       console.error("There was an error signing up!", error);
@@ -57,12 +63,7 @@ function Signup() {
   };
 
   return (
-    <GoogleOAuthProvider
-      clientId={
-        import.meta.env.VITE_GOOGLE_CLIENT_ID ||
-        "956095514806-v41p0jeg8ik46llfuv4gg6fk2pmgg652.apps.googleusercontent.com"
-      }
-    >
+    <GoogleOAuthProvider clientId={clientId}>
       <div className="font-metropolis h-auto w-[475px] bg-white p-7 flex flex-col rounded-md">
         <div className="flex items-center justify-between  w-full">
           <h1 className="text-3xl">Sign up</h1>
@@ -97,21 +98,11 @@ function Signup() {
             id="check"
             checked={agreed}
             onChange={(e) => setAgreed(e.target.checked)}
-            className="cursor-pointer h-6 w-7 rounded-md border-gray-300 border-2 hover:border-red-500 focus:ring-0 appearance-none checked:border-red-500 checked:bg-red-500 relative ease-in duration-200 "
+            className={`${styles.check} cursor-pointer h-6 w-7 rounded-md border-gray-300 border-2 hover:border-red-500 focus:ring-0 appearance-none checked:border-red-500 checked:bg-red-500 relative ease-in duration-200`}
             style={{
               position: "relative",
             }}
           />
-          <style jsx>{`
-            #check:checked::before {
-              content: "✓";
-              color: white;
-              position: absolute;
-              top: 0px;
-              left: 3px;
-              font-size: 15px;
-            }
-          `}</style>
 
           <label
             className="text-[11px] text-left cursor-pointer leading-tight tracking-wide text-[#9d9d9d]"
@@ -126,7 +117,12 @@ function Signup() {
           </label>
         </div>
 
-        <button onClick={handleSignup} className="ease-in duration-200 text-center bg-[#e23745d7] rounded-md p-3 mt-5 text-[#ffffff] hover:bg-[#E23744]">Create Account</button>
+        <button
+          onClick={handleSignup}
+          className="ease-in duration-200 text-center bg-[#e23745d7] rounded-md p-3 mt-5 text-[#ffffff] hover:bg-[#E23744]"
+        >
+          Create Account
+        </button>
 
         <div className="relative flex items-center justify-center my-6">
           <div className="absolute px-2 bg-white text-gray-500">Or</div>
@@ -134,8 +130,9 @@ function Signup() {
         </div>
 
         <GoogleLogin>
-          onSuccess={handleGoogleLoginSuccess}
-          onError={handleGoogleLoginFailure}
+          onSuccess=
+          {(credentialResponse) => handleGoogleLoginSuccess(credentialResponse)}
+          onError={() => handleGoogleLoginFailure()}
           useOneTap
         </GoogleLogin>
 
@@ -143,9 +140,10 @@ function Signup() {
 
         <div className="flex item-center tracking-wide mt-4">
           <p className="text-lg">Already have an account ?</p>
-          <a className="text-[#e03546] text-lg ml-2" href="#">Log in</a>
+          <a className="text-[#e03546] text-lg ml-2" href="#">
+            Log in
+          </a>
         </div>
-
       </div>
     </GoogleOAuthProvider>
   );

@@ -1,0 +1,8 @@
+.check:checked::before {
+  content: "✓";
+  color: white;
+  position: absolute;
+  top: 0px;
+  left: 3px;
+  font-size: 15px;
+}

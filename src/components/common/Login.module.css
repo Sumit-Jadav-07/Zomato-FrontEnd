@@ -1,0 +1,39 @@
+.custom_phone_input {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem; 
+  border: 2px solid #009688; 
+  border-radius: 8px; 
+  overflow: hidden;
+}
+
+.custom_phone_input:focus {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.custom_phone_input input {
+  outline: none;
+  border: none;
+  padding: 0.5rem;
+  background: transparent !important;
+  background-color: transparent !important; 
+  font-size: 1rem;
+}
+
+/* Remove background on focus and active states for the input */
+.custom_phone_input input:focus,
+.custom_phone_input input:active {
+  background: transparent !important; 
+  background-color: transparent !important;
+}
+
+/* Adjusts the color and styling of the placeholder text */
+.custom_phone_input input::placeholder {
+  color: #000000;
+}
+
+/* Optional: Style for the country selector dropdown */
+.custom_phone_input .react-phone-number-input__country {
+  margin-right: 0.8rem;
+}
